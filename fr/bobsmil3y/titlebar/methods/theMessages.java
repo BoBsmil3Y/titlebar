@@ -7,18 +7,21 @@ import java.util.Calendar;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 
 
-public class theMessages
-{
+public class theMessages {
+
 	public titlebar plugin;
 
 	public theMessages(titlebar plugin) {
 		this.plugin = plugin;
 	}
+
+	@SuppressWarnings("unused")
 	public static String setupInt(Integer i) {
-		String str;
+		String str = "";
 		Integer integer = i;
 		if (i.intValue() < 10) {
 			str = "0" + i;
@@ -87,22 +90,6 @@ public class theMessages
 	}
 
 
-	public static byte getTPS() {
-		int sum = 0;
-
-		if (vars.tpsByteList.size() > 0) {
-			for (Byte i : vars.tpsByteList) {
-				sum += i.byteValue();
-			}
-
-			return (byte)(sum / vars.tpsByteList.size());
-		} 
-		return 0;
-	}
-
-
-
-
 	public static String replaceWithVariables(Player p, String s) {
 		String old = s;
 		int staffs = 0;
@@ -130,7 +117,6 @@ public class theMessages
 			} 
 			vanishedplayers++;
 		} 
-
 
 
 		if (theConfig.getShowVanishedPlayerOnVariableChangeText()) {
@@ -174,17 +160,18 @@ public class theMessages
 
 		old = ChatColor.translateAlternateColorCodes('&', s).replace("%player%", p.getName())
 
-				.replace("%level%", (new StringBuilder(String.valueOf(p.getLevel()))).toString())
-				.replace("%health%", (new StringBuilder(String.valueOf(Math.round(player.getHealth())))).toString())
-				.replace("%foodlevel%", (new StringBuilder(String.valueOf(Math.round(Double.parseDouble((new StringBuilder(String.valueOf(p.getFoodLevel()))).toString()))))).toString())
-				.replace("%maxhealth%", (new StringBuilder(String.valueOf(Math.round(player.getMaxHealth())))).toString())
-				.replace("%iteminhandtype%", p.getItemInHand().getType().name())
-				.replace("%iteminhandamount%", (new StringBuilder(String.valueOf(p.getItemInHand().getAmount()))).toString())
-				.replace("%iteminhandid%", (new StringBuilder(String.valueOf(p.getItemInHand().getTypeId()))).toString())
+				.replace("%level%", Integer.toString(p.getLevel()))
+				.replace("%health%", String.valueOf(Math.round(player.getHealth())))
+				.replace("%foodlevel%", Integer.toString(p.getFoodLevel()))
+				.replace("%maxhealth%", player.getAttribute(Attribute.GENERIC_MAX_HEALTH).toString())
+				.replace("%iteminmainhandtype%", p.getInventory().getItemInMainHand().getItemMeta().getDisplayName())
+				.replace("%iteminmainhandamount%", Integer.toString(p.getInventory().getItemInMainHand().getAmount()))
+				.replace("%iteminoffhandtype%", p.getInventory().getItemInOffHand().getItemMeta().getDisplayName())
+				.replace("%iteminoffhandamount%", Integer.toString(p.getInventory().getItemInOffHand().getAmount()))
 				.replace("%gamemode%", p.getGameMode().name())
 				.replace("%ping%", (new StringBuilder(String.valueOf(ping))).toString())
 
-				.replace("%difficulty%", (CharSequence)p.getWorld().getDifficulty())
+				.replace("%difficulty%", p.getWorld().getDifficulty().toString())
 				.replace("%world%", p.getWorld().getName())
 				.replace("%blockx%", (new StringBuilder(String.valueOf(df.format(p.getLocation().getX())))).toString())
 				.replace("%blocky%", (new StringBuilder(String.valueOf(df.format(p.getLocation().getY())))).toString())
@@ -196,13 +183,13 @@ public class theMessages
 				.replace("%onlineplayers%", onlinePlayersText)
 				.replace("%vanishedplayers%", (new StringBuilder(String.valueOf(vanishedplayers))).toString())
 				.replace("%maxonlineplayers%", (new StringBuilder(String.valueOf(Bukkit.getServer().getMaxPlayers()))).toString())
-				.replace("%servermotd%", (new StringBuilder(String.valueOf(Bukkit.getServer().getMotd()))).toString())
-				.replace("%servername%", (new StringBuilder(String.valueOf(Bukkit.getServer().getServerName()))).toString())
-				.replace("%serverid%", (new StringBuilder(String.valueOf(Bukkit.getServer().getServerId()))).toString())
-				.replace("%serverip%", (new StringBuilder(String.valueOf(Bukkit.getServer().getIp()))).toString())
-				.replace("%serverport%", (new StringBuilder(String.valueOf(Bukkit.getServer().getPort()))).toString())
+				.replace("%servermotd%", titlebar.getPlugin().getServer().getMotd())
+				.replace("%servername%", titlebar.getPlugin().getServer().getName())
+				.replace("%servershutdownmessage%", titlebar.getPlugin().getServer().getShutdownMessage())
+				.replace("%serverversion%", titlebar.getPlugin().getServer().getVersion())
+				.replace("%serverip%", titlebar.getPlugin().getServer().getIp())
+				.replace("%serverport%", Integer.toString(titlebar.getPlugin().getServer().getPort()))
 				.replace("%staffs%", (new StringBuilder(String.valueOf(staffs))).toString())
-				.replace("%tps%", (new StringBuilder(String.valueOf(df.format(getTPS())))).toString())
 
 				.replace("%time%", time)
 				.replace("%date%", date);
@@ -210,7 +197,7 @@ public class theMessages
 
 		if (old.contains("%money%")) {
 			if (titlebar.economy != null) {
-				String money = df.format(titlebar.economy.getBalance(p.getName()));
+				String money = df.format(titlebar.economy.getBalance(p));
 				old = old.replace("%money%", money);
 			} else {
 				System.out.println(String.valueOf(titlebar.getPlugin().getDescription().getName()) + "> " + vars.message_vaulterror + "Economy");
@@ -227,7 +214,7 @@ public class theMessages
 						.replace("%group%", group);
 			} else {
 				System.out.println(String.valueOf(titlebar.getPlugin().getDescription().getName()) + "> " + vars.message_vaulterror + "Chat");
-			} 
+			}
 		}
 
 		if (vars.phapi_active) {
@@ -236,4 +223,5 @@ public class theMessages
 
 		return old;
 	}
+
 }
