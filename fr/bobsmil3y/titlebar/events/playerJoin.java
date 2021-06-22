@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 public class playerJoin implements Listener {
@@ -26,11 +27,11 @@ public class playerJoin implements Listener {
 			if (p.hasPlayedBefore()) {
 				if (this.plugin.getConfig().getBoolean(String.valueOf(this.plugin.getDescription().getName()) + ".Settings.Join.Toggle")) {
 					vars.taskNumber.put(p.getName(), Integer.valueOf(0));
-					BukkitTask taskID = Bukkit.getScheduler().runTaskTimer((Plugin)this.plugin, new Runnable()
-					{
-						public void run()
-						{
-							int num = 0;
+
+					BukkitTask taskID = new BukkitRunnable() {
+					    public void run() {
+					    
+					    	int num = 0;
 							if (vars.taskNumber.containsKey(p.getName())) {
 								num = ((Integer)vars.taskNumber.get(p.getName())).intValue();
 							}
@@ -53,19 +54,21 @@ public class playerJoin implements Listener {
 								vars.taskNumber.remove(p.getName());
 
 							}
-
-						}
-					}0L, theConfig.getJoinTime(this.plugin));
+					    
+					    }
+					}.runTaskTimer(this.plugin, 0L, theConfig.getJoinTime(this.plugin));
+					
 					vars.joinTasks.put(p.getUniqueId(), taskID);
 				}
 
 			} else if (this.plugin.getConfig().getBoolean(String.valueOf(this.plugin.getDescription().getName()) + ".Settings.FirstJoin.Toggle")) {
 				vars.taskNumber.put(p.getName(), Integer.valueOf(0));
-				BukkitTask taskID = Bukkit.getScheduler().runTaskTimer((Plugin)this.plugin, new Runnable()
-				{
-					public void run()
-					{
-						if (vars.taskNumber.containsKey(p.getName())) {
+				
+				
+				BukkitTask taskID = new BukkitRunnable() {
+				    public void run() {
+				       
+				    	if (vars.taskNumber.containsKey(p.getName())) {
 							int num = ((Integer)vars.taskNumber.get(p.getName())).intValue();
 
 							theTitle.sendTitle(p, vars.firstjoin_titleMessages.get(num), vars.firstjoin_subtitleMessages.get(num), titlebar.getPlugin(), true);
@@ -85,9 +88,10 @@ public class playerJoin implements Listener {
 							vars.taskNumber.remove(p.getName());
 
 						}
-
-					}
-				}0L, theConfig.getJoinTime(this.plugin));
+				    	
+				    }
+				}.runTaskTimer(this.plugin, 0L, theConfig.getJoinTime(this.plugin));
+				
 				vars.joinTasks.put(p.getUniqueId(), taskID);
 			} 
 		} 

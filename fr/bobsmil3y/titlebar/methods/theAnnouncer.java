@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class theAnnouncer
 {
@@ -68,11 +69,11 @@ public class theAnnouncer
 
 	public static void start(titlebar plugin) {
 		loadMessages(plugin);
-		vars.announcer = Bukkit.getScheduler().runTaskTimer((Plugin)plugin, new Runnable()
-		{
-			public void run()
-			{
-				int num = vars.announcer_messagenumber;
+		
+		vars.announcer = new BukkitRunnable() {
+		    public void run() {
+		       
+		    	int num = vars.announcer_messagenumber;
 
 				for (Player op : Bukkit.getOnlinePlayers()) {
 					if (!vars.joinTasks.containsKey(op.getUniqueId()) && 
@@ -88,9 +89,10 @@ public class theAnnouncer
 				} else {
 					vars.announcer_messagenumber = 0;
 				}
-
-			}
-		}20L, (theConfig.getAnnouncerTime(plugin) + 1));
+		    	
+		    }
+		}.runTaskTimer(plugin, 20L, (theConfig.getAnnouncerTime(plugin) + 1));
+		
 		if (theConfig.getAnnouncerStopTime(plugin) != 0) {
 			Bukkit.getScheduler().runTaskLater((Plugin)plugin, new Runnable()
 			{
