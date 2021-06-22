@@ -17,11 +17,6 @@
    public static HashMap<UUID, BukkitTask> joinTasks = new HashMap<>();
    public static HashMap<String, Integer> taskNumber = new HashMap<>();
    
-   public static BukkitTask tpsTask = null;
-   public static Timer tpsTimer = null;
-   public static ArrayList<Byte> tpsByteList = new ArrayList<>();
-   public static byte tpsTicks = 0;
-   
    public static boolean phapi_active = false;
    
    public static ArrayList<UUID> anti_announcer = new ArrayList<>();
