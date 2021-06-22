@@ -1,0 +1,16 @@
+name: Titlebar
+version: 2.0.0.0
+autors: [sn1cko, bobsmil3y]
+api-version: 1.16
+main: fr.bobsmil3y.titlebar.titlebar
+commands:
+   titlebar:
+      description: This is the main Titlebar command.
+      aliases: [tbar, tb]
+   subtitlebar:
+      description: This is the sub Titlebar command.
+      aliases: [stbar, stb]
+   titlebarannouncer:
+      description: This is the Announcer Titlebar command.
+      aliases: [tbarannouncer, tbannouncer, tbara, tba, titlebara]
+softdepend: [PlaceholderAPI]
