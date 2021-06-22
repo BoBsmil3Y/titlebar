@@ -158,16 +158,19 @@ public class theMessages {
 
 		String time = String.valueOf(setupInt(Integer.valueOf(hours))) + ":" + setupInt(Integer.valueOf(minutes)) + ":" + setupInt(Integer.valueOf(seconds));
 
-		old = ChatColor.translateAlternateColorCodes('&', s).replace("%player%", p.getName())
+		old = ChatColor.translateAlternateColorCodes('&', s)
+				
+				.replace("%player%", p.getName())
+				.replace("%playerdisplayname%", p.getDisplayName())
 
 				.replace("%level%", Integer.toString(p.getLevel()))
 				.replace("%health%", String.valueOf(Math.round(player.getHealth())))
 				.replace("%foodlevel%", Integer.toString(p.getFoodLevel()))
 				.replace("%maxhealth%", player.getAttribute(Attribute.GENERIC_MAX_HEALTH).toString())
-				.replace("%iteminmainhandtype%", p.getInventory().getItemInMainHand().getItemMeta().getDisplayName())
-				.replace("%iteminmainhandamount%", Integer.toString(p.getInventory().getItemInMainHand().getAmount()))
-				.replace("%iteminoffhandtype%", p.getInventory().getItemInOffHand().getItemMeta().getDisplayName())
-				.replace("%iteminoffhandamount%", Integer.toString(p.getInventory().getItemInOffHand().getAmount()))
+				.replace("%iteminmainhandtype%", p.getInventory().getItemInMainHand().getItemMeta() == null ? "" : p.getInventory().getItemInMainHand().getItemMeta().getDisplayName())
+				.replace("%iteminmainhandamount%", p.getInventory().getItemInMainHand().getItemMeta() == null ? "" : Integer.toString(p.getInventory().getItemInMainHand().getAmount()))
+				.replace("%iteminoffhandtype%", p.getInventory().getItemInOffHand().getItemMeta() == null ? "" : p.getInventory().getItemInOffHand().getItemMeta().getDisplayName())
+				.replace("%iteminoffhandamount%", p.getInventory().getItemInOffHand().getItemMeta() == null ? "" : Integer.toString(p.getInventory().getItemInOffHand().getAmount()))
 				.replace("%gamemode%", p.getGameMode().name())
 				.replace("%ping%", (new StringBuilder(String.valueOf(ping))).toString())
 
