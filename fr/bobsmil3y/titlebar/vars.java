@@ -2,7 +2,6 @@
  
  import java.util.ArrayList;
  import java.util.HashMap;
- import java.util.Timer;
  import java.util.UUID;
  import org.bukkit.scheduler.BukkitTask;
  
